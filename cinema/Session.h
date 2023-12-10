@@ -123,73 +123,26 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& out,Session* session)
 	{
-		out << "Дата: " << session->getDay() << "." << session->getMonth() << "." << session->getYear() << std::endl;
-		out << "Время: " << session->getTime() << std::endl;
-		out << "Номер сеанса: " << session->getNumSess() << std::endl;
-		out << "Номер зала: " << session->getHall() << std::endl;
-		out << "Название фильма: " << session->getFilmName() << std::endl;
-		out << "Количество билетов: " << session->getTick() << std::endl;
-
+		out << session->getDay() << "\t" << session->getMonth() << "\t" << session->getYear() << std::endl;
+		out << session->getTime() << std::endl;
+		out << session->getNumSess() << "\t";
+		out << session->getHall() << std::endl;
+		out << session->getTick() << std::endl;
+		out << session->getFilmName() << std::endl;
+		
 		return out;
 	}
-	//friend std::istream& operator>>(std::istream& in, Session* session)
-	//{
-	//	int day, month, year, hall, tick,numSess;
-	//	std::string filmName, time;
-
-	//	// Чтение данных о сеансе из файла
-	//	if (in >> day >> month >> year >> time>>numSess >> hall >> filmName >> tick) {
-	//		session->setDay(day);
-	//		session->setMonth(month);
-	//		session->setYear(year);
-	//		session->setTime(time);
-	//		session->setHall(hall);
-	//		session->setTick(tick);
-	//		session->setNumSess(numSess);
-	//		session->setFilmName(filmName);
-
-	//		// Считываем билеты до появления "************************"
-	//		std::string ticketData;
-	//		while (std::getline(in, ticketData)) {
-	//			if (ticketData == "************************") {
-	//				break;
-	//			}
-	//			Ticket<std::string>* ticket = new Ticket<std::string>();
-	//			std::stringstream ;
-	//			ticketStream >> *ticket;
-	//			if (ticketStream) {
-	//				session->addTicket(ticket);
-	//			}
-	//			else {
-	//				delete ticket; // Очистка памяти в случае неудачного считывания билета
-	//			}
-	//		}
-	//	}
-	//	return in;
-	//}
-	//friend std::ostream& operator<<(std::ostream& out, Session* session)
-	//{
-	//	out << "Дата: " << session->getDay() << "." << session->getMonth() << "." << session->getYear() << std::endl;
-	//	out << "Время: " << session->getTime() << std::endl;
-	//	out << "Номер сеанса: " << session->getNumSess() << std::endl;
-	//	out << "Номер зала: " << session->getHall() << std::endl;
-	//	out << "Название фильма: " << session->getFilmName() << std::endl;
-	//	out << "Количество билетов: " << session->getTick() << std::endl;
-
-	//	out << "Билеты:" << std::endl;
-	//	for (const auto& ticket : session->getVect())
-	//	{
-	//		out << ticket; // Используем перегруженный оператор << для билетов
-	//	}
-	//	out << "************************";
-	//	return out;
-	//}
 	friend std::istream& operator>>(std::istream& in, Session* session)
 	{
 		int day, month, year, numSess, hall, tick;
 		std::string filmName, time;
 
-		in >> day >> month >> year >> time >> numSess >> hall >> tick >> filmName;
+		in >> day >> month >> year;
+		in >> time;
+	    in>> numSess >> hall;
+		in >> tick;
+		getline(in,filmName);
+
 		session->setDay(day);
 		session->setMonth(month);
 		session->setYear(year);

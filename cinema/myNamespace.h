@@ -71,7 +71,7 @@ namespace myNamespace
     std::vector<class Ticket<std::string>*> inputTicketsFromFile(std::vector<class Ticket<std::string>*> tickets);
     std::vector <Session*> inputSessionsFromFile(std::vector <Session*> sessions);
     void outputSessionsToFilms(std::array <Film*, 10> films, int cur_films);
-    int inputFilmsFromFile(std::array <Film*, 10> films);
+    int inputFilmsFromFile(std::array <Film*, 10>& films);
     void outputFilmsToFilms(std::array <Film*, 10> films, int cur_films);
 
     void menuFull()
@@ -868,22 +868,21 @@ namespace myNamespace
         }
 
     }
-    int inputFilmsFromFile(std::array <Film*, 10> films)
+    int inputFilmsFromFile(std::array <Film*, 10>& films)
     {
         int cur_films = 0;
-        std::ifstream inputFile("film.txt",std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile("film.txt", std::ios::app); // открываем файл для чтения
 
         while (!inputFile.eof()) {
             Film* film = new Film();
             if (inputFile >> film)
             {
+                if (!film->getCategory().size()) { break; }
                 films[cur_films] = film;
                 cur_films++;
             }
-            
-            delete film;
         }
-        
+
         inputFile.close();
         return cur_films;
     }
@@ -927,6 +926,8 @@ namespace myNamespace
     {
         std::ofstream file("ticket.txt", std::ios::app);
         if (file.is_open()) {
+            std::cout << films[0]->getSess()[0]->getVect().size();
+            system("cls");
             for (int i = 0; i < cur_films; i++)
             {
                 for (int j = 0; j < films[i]->getSess().size(); j++)
@@ -946,7 +947,7 @@ namespace myNamespace
     }
     std::vector<class Ticket<std::string>*> inputTicketsFromFile(std::vector<class Ticket<std::string>*> tickets)
     {
-        std::ifstream inputFile("ticket.txt", std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile("ticket.txt", std::ios::app); 
 
         while (!inputFile.eof()) {
             Ticket<std::string>* a = new Ticket<std::string>();

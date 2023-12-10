@@ -86,11 +86,11 @@ public:
 	template <class T>
 	friend std::ostream& operator<<(std::ostream& out, Ticket<T>* ticket)
 	{
-		out << "Фильм: " << ticket->getFilmName() << std::endl;
-		out << "Ряд: " << ticket->getRow() << ", Место: " << ticket->getSeat() << std::endl;
-		out << "Стоимость: " << ticket->getCost() << std::endl;
-		out << "Специальный код: " << ticket->getSpecial_code() << std::endl;
-		out << "Пользователь: " << ticket->getUser() << std::endl;
+		
+		out  << ticket->getRow() << "\t" << ticket->getSeat() << std::endl;
+		out << ticket->getCost() << std::endl;
+		out << ticket->getSpecial_code() << std::endl;
+		out << ticket->getFilmName() << std::endl;
 		return out;
 	}
 	template <class T>
@@ -100,13 +100,18 @@ public:
 		int seat, row;
 		float cost;
 		T specialCode;
-		if (in >> filmName >> seat >> row >> cost >> specialCode) {
-			ticket->setFilmName(filmName);
-			ticket->setSeat(seat);
-			ticket->setRow(row);
-			ticket->setCost(cost);
-			ticket->setSpecial_code(specialCode);
-		}
+		
+		in >> row >> seat;
+		in >> cost;
+		in >> specialCode;
+		getline(in,filmName);
+
+	    ticket->setFilmName(filmName);
+	    ticket->setSeat(seat);
+        ticket->setRow(row);
+        ticket->setCost(cost);
+	    ticket->setSpecial_code(specialCode);
+		ticket->setUser(NULL);
 		return in;
 	}
 };

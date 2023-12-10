@@ -17,8 +17,8 @@ int main()
 
     int del_workers = 0;
 
-    /*std::vector<class Ticket<std::string>*> tickets = myNamespace::inputTicketsFromFile(tickets);*/
-    /*std::vector<Session*> sessions = myNamespace::inputSessionsFromFile(sessions);*/
+    std::vector<class Ticket<std::string>*> tickets /*= myNamespace::inputTicketsFromFile(tickets)*/;
+    std::vector<Session*> sessions /*= myNamespace::inputSessionsFromFile(sessions)*/;
 
     std::string nameAdmin = "qw";
     std::string loginAdmin = "zxcvbnm123";
@@ -1192,8 +1192,8 @@ int main()
         case 4:
             std::cout << "\n\n\n\n\n\n\n\t\t\t\t";
             myNamespace::outputFilmsToFilms(films, current_films);
-            myNamespace::outputSessionsToFilms(films, current_films);
-            myNamespace::outputTicketsToFilms(films, current_films);
+           /* myNamespace::outputSessionsToFilms(films, current_films);
+            myNamespace::outputTicketsToFilms(films, current_films);*/
             break;
         default:
             std::cout << "\n\n\n\n\n\t\t\t\t\t\t";

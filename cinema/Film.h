@@ -77,24 +77,58 @@ public:
 	void showSessions();
 	void showData();
 
-	friend std::ostream& operator<<(std::ostream& out, Film* film)
+	/*friend std::ostream& operator<<(std::ostream& out, Film* film)
 	{
-		out << film->getName() << "\t";
-		out << film->getGanre() << "\t";
-		out << film->getCategory() << "\t";
 		out << film->getHour() << "\t";
 	    out << film->getMinute()<< std::endl;
+		out << film->getName() << std::endl;
+		out << film->getGanre() << std::endl;
+		out << film->getCategory() << std::endl;
 		return out;
 	}
 	
 	friend std::istream& operator>>(std::istream& in, Film* film) {
 		std::string name, genre, category;
 		int hour, minute;
+		in >> hour >> minute;
 		getline(in, name);
-		getline(in ,genre);
-		getline(in ,category);
+		getline(in, genre);
+		getline(in, category);
+
+		film->setName(name);
+		film->setGenre(genre);
+		film->setCategory(category);
+		film->setHour(hour);
+		film->setMinute(minute);
+		return in;
+	}*/
+	friend std::ostream& operator<<(std::ostream& out, Film* film)
+	{
+		out << film->getHour() << "\t";
+		out << film->getMinute() << '\t';
+		out << film->getCategory() << "\t";
+		out << film->getGanre() << "|";
+		out << film->getName() << std::endl;
+		return out;
+	}
+
+	friend std::istream& operator>>(std::istream& in, Film* film) {
+		int hour, minute;
+		std::string name, genre, category;
+
 		in >> hour;
 		in >> minute;
+		in >> category;
+		if (!category.size()) { return in; }
+
+		for (char tempSymb{}; tempSymb != '|'; ) {
+			genre += tempSymb;
+			in >> std::noskipws >> tempSymb;
+		}
+		in >> std::skipws;
+		genre.erase(genre.begin(), genre.begin() + 2);
+
+		getline(in, name);
 
 		film->setName(name);
 		film->setGenre(genre);
