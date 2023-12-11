@@ -29,7 +29,10 @@ public:
 	{
 		return 0;
 	}
-
+	void setWorcode(int code) override
+	{
+		this->workers_code = code;
+	}
 	void showData() override
 	{
 		std::cout << "\t\t\t\t" << '|' << std::setw(30) << std::left << this->getName() << '|' << std::setw(29) << this->getWorCode() << "|" << std::endl;
@@ -39,5 +42,21 @@ public:
 	void setMoney(float money) override
 	{
 
+	}
+
+	friend std::istream& operator>>(std::istream& in, Person* worker) {
+		std::string login, password, name;
+		int code;
+		in >> login;
+		in >> password;
+		in >> code;
+		
+		getline(in, name);
+		getline(in, name);
+		worker->setName(name);
+		worker->setLogin(login);
+		worker->setPassword(password);
+		worker->setWorcode(code);
+		return in;
 	}
 };

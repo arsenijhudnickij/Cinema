@@ -8,7 +8,7 @@ private:
 	int row;
 	float cost;
 	T special_code;
-	Person* user;
+	int id_user;
 	std::string film_name;
 public:
 	Ticket() {
@@ -16,7 +16,7 @@ public:
 		row = 0;
 		cost = 0;
 		special_code = "";
-		user = NULL;
+		id_user;
 		film_name = "";
 	};
 	Ticket(const int& seat, const int& row, const float& cost, const T& special_code,const std::string& film1)
@@ -105,7 +105,7 @@ public:
 		in >> cost;
 		in >> specialCode;
 		getline(in,filmName);
-
+		if (!filmName.size()) { return in; }
 	    ticket->setFilmName(filmName);
 	    ticket->setSeat(seat);
         ticket->setRow(row);

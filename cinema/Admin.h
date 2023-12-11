@@ -38,4 +38,8 @@ public:
 	{
 		return 0;
 	}
+
+	void setWorcode(int code) override
+	{
+	}
 };

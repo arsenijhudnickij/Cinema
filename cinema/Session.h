@@ -142,7 +142,9 @@ public:
 	    in>> numSess >> hall;
 		in >> tick;
 		getline(in,filmName);
+		getline(in, filmName);
 
+		if (!filmName.size()) { return in; }
 		session->setDay(day);
 		session->setMonth(month);
 		session->setYear(year);

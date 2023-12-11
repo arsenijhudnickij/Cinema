@@ -89,4 +89,7 @@ public:
 		return 0;
 	}
 	void showTicketsTable();
+	void setWorcode(int code) override
+	{
+	}
 };

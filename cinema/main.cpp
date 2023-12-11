@@ -9,23 +9,22 @@ int main()
     int current_users = 0;
     std::vector<User*> users;
 
-    int current_workers = 0;
-    std::vector<Person*> workers;
+    std::vector<Worker*> workers;
+    int current_workers = myNamespace::inputWorkersFromFile(workers);
 
     std::array <Film*, 10> films{};
     int current_films = myNamespace::inputFilmsFromFile(films);
 
     int del_workers = 0;
 
-    std::vector<class Ticket<std::string>*> tickets /*= myNamespace::inputTicketsFromFile(tickets)*/;
-    std::vector<Session*> sessions /*= myNamespace::inputSessionsFromFile(sessions)*/;
+    std::vector<Session*> sessions  =myNamespace::inputSessionsFromFile(sessions);
 
     std::string nameAdmin = "qw";
     std::string loginAdmin = "zxcvbnm123";
     std::string passwordAdmin = "qwertyuiop";
     std::string codeAdmin = "qwertyuiop";
 
-    std::unique_ptr<Admin> admin1(new Admin(loginAdmin, passwordAdmin, nameAdmin, codeAdmin));
+    std::unique_ptr<Admin> admin1(new Admin(loginAdmin, myNamespace::kodirovka(passwordAdmin), nameAdmin, codeAdmin));
 
     int codes[3] = { 123567,634521,719034 };
     int current_sessions = 0;
@@ -475,7 +474,7 @@ int main()
                 {
                 case 1:
                 {
-                    Person* a = myNamespace::registrationWorker(workers, codes);
+                    Worker* a = myNamespace::registrationWorker(workers, codes);
                     if (a != NULL)
                     {
                         workers.push_back(a);
@@ -671,7 +670,7 @@ int main()
                                 std::cout << "\t\t\t\t\t\t";
                                 std::getline(std::cin, prev_pass);
                                 system("cls");
-                                if (bbb->getWorCode() == wor_cod && bbb->getPassword() == prev_pass)
+                                if (bbb->getWorCode() == wor_cod && bbb->getPassword() == myNamespace::kodirovka(prev_pass))
                                 {
                                     std::string new_pass;
                                     std::cout << "\n\n\n\n\n\t\t\t\t\t\t¬ведите новый пароль:" << std::endl;
@@ -689,7 +688,7 @@ int main()
                                             if (workers[i]->getName() == bbb->getName() && workers[i]->getLogin() == bbb->getLogin()
                                                 && workers[i]->getPassword() == bbb->getPassword() && workers[i]->getWorCode() == bbb->getWorCode())
                                             {
-                                                bbb->setPassword(new_pass1);
+                                                bbb->setPassword(myNamespace::kodirovka(new_pass1));
                                                 std::cout << "\n\n\n\n\n\t\t\t\t\tѕароль изменен" << std::endl;
                                             }
                                         }
@@ -960,7 +959,7 @@ int main()
                                     std::cout << "\t\t\t\t\t";
                                     std::getline(std::cin, name_work);
 
-                                    int cur_w = Worker::getCount() - del_workers;
+                                    int cur_w = current_workers - del_workers;
                                     if (method.deleteSmth(workers, name_work, cur_w) >= 0)
                                     {
                                         workers.erase(workers.begin() + method.deleteSmth(workers, name_work, cur_w));
@@ -1191,6 +1190,7 @@ int main()
         }
         case 4:
             std::cout << "\n\n\n\n\n\n\n\t\t\t\t";
+            myNamespace::outputWorkers(workers);
             myNamespace::outputFilmsToFilms(films, current_films);
            /* myNamespace::outputSessionsToFilms(films, current_films);
             myNamespace::outputTicketsToFilms(films, current_films);*/

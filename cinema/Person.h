@@ -51,4 +51,5 @@ public:
 
 	virtual void setMoney(float money) = 0;
 	virtual int getWorCode() = 0;
+	virtual void setWorcode(int code) = 0;
 };

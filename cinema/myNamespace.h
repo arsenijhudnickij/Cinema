@@ -44,11 +44,11 @@ namespace myNamespace
     std::string hiddenPassword();
     User* registrationUser(std::vector<User*> users);
     User* authorizationUser(std::vector<User*> users);
-    Person* registrationWorker(std::vector<Person*> workers, int code[3]);
-    Person* authorizationWorker(std::vector<Person*> workers);
+    Worker* registrationWorker(std::vector<Worker*> workers, int code[3]);
+    Worker* authorizationWorker(std::vector<Worker*> workers);
     int kolb(std::string w);
     int checkLogUser(std::vector <User*> users, std::string kod);
-    int checkLogWorker(std::vector <Person*> workers, std::string kod);
+    int checkLogWorker(std::vector <Worker*> workers, std::string kod);
     std::string containsOnlyLetters(std::string str);
     int checkNumber(int a);
     int authorizationAdmin(std::unique_ptr<Admin>& admin1);
@@ -73,6 +73,9 @@ namespace myNamespace
     void outputSessionsToFilms(std::array <Film*, 10> films, int cur_films);
     int inputFilmsFromFile(std::array <Film*, 10>& films);
     void outputFilmsToFilms(std::array <Film*, 10> films, int cur_films);
+    std::string kodirovka(std::string text);
+    void outputWorkers(std::vector<Worker*> workers);
+    int inputWorkersFromFile(std::vector<Worker*>& workers);
 
     void menuFull()
     {
@@ -252,7 +255,7 @@ namespace myNamespace
 
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВы успешно зарегистрировались" << std::endl;
 
-        User* pers = new User(name_pers, kod, pass, email_pers, year, month, date, 0);
+        User* pers = new User(name_pers, kod, kodirovka(pass), email_pers, year, month, date, 0);
         return pers;
     }
     User* authorizationUser(std::vector<User*> users)
@@ -277,7 +280,7 @@ namespace myNamespace
 
         for (int i = 0; i < users.size(); i++)
         {
-            if (users[i]->getLogin() == checklog && users[i]->getPassword() == checkpass)
+            if (users[i]->getLogin() == checklog && users[i]->getPassword() == kodirovka(checkpass))
             {
                 a = users[i];
                 flag = 1;
@@ -296,7 +299,7 @@ namespace myNamespace
 
     }
 
-    Person* registrationWorker(std::vector<Person*> workers, int code[3])
+    Worker* registrationWorker(std::vector<Worker*> workers, int code[3])
     {
         std::string kod;
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите логин:" << std::endl;
@@ -338,7 +341,7 @@ namespace myNamespace
         if (flag == 1)
         {
             std::cout << "\n\n\n\n\n\t\t\t\t\tВы успешно зарегистрировались" << std::endl;
-            Person* pers = new Worker(kod, pass, name_wor, spec_code);
+            Worker* pers = new Worker(kod, kodirovka(pass), name_wor, spec_code);
             return pers;
 
         }
@@ -349,13 +352,13 @@ namespace myNamespace
         }
 
     }
-    Person* authorizationWorker(std::vector<Person*> workers)
+    Worker* authorizationWorker(std::vector<Worker*> workers)
     {
         std::string checklog;
         std::string checkpass;
         std::string name_wor;
         int flag = 0;
-        Person* a = NULL;
+        Worker* a = NULL;
 
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите имя и фамилию:" << std::endl;
         do {
@@ -373,16 +376,16 @@ namespace myNamespace
             std::getline(std::cin, checklog);
         } while (kolb(checklog) < 8);
         system("cls");
-
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите пароль" << std::endl;
         do {
             checkpass = hiddenPassword();
 
         } while (kolb(checkpass) < 8);
         system("cls");
+        std::string pas = kodirovka(checkpass);
         for (int i = 0; i < workers.size(); i++)
         {
-            if (workers[i]->getLogin() == checklog && workers[i]->getPassword() == checkpass && workers[i]->getName() == name_wor)
+            if (workers[i]->getLogin() == checklog && workers[i]->getPassword() == pas && workers[i]->getName() == name_wor)
             {
                 a = workers[i];
                 flag++;
@@ -437,7 +440,7 @@ namespace myNamespace
         }
     }
 
-    int checkLogWorker(std::vector <Person*> workers, std::string kod)
+    int checkLogWorker(std::vector <Worker*> workers, std::string kod)
     {
         int a = 0;
         for (int i = 0; i < workers.size(); i++)
@@ -554,7 +557,7 @@ namespace myNamespace
             checkCode = hiddenPassword();
         } while (kolb(checkpass) < 8);
 
-        if (admin1->getName() == name_wor && admin1->getLogin() == checklog && admin1->getPassword() == checkpass
+        if (admin1->getName() == name_wor && admin1->getLogin() == checklog && admin1->getPassword() == kodirovka(checkpass)
             && admin1->getAdminCode() == checkCode)
         {
             flag++;
@@ -855,12 +858,12 @@ namespace myNamespace
 
     void outputFilmsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("film.txt", std::ios::app);
+        std::ofstream file("film.txt");
         if (file.is_open()) {
             for (int i = 0; i < cur_films; i++)
             {
                 file << films[i];
-            } 
+            }
             file.close();
         }
         else {
@@ -915,9 +918,7 @@ namespace myNamespace
             {
                 sessions.push_back(sess);
             }
-            delete sess;
         }
-
         inputFile.close();
         return sessions;
     }
@@ -947,7 +948,7 @@ namespace myNamespace
     }
     std::vector<class Ticket<std::string>*> inputTicketsFromFile(std::vector<class Ticket<std::string>*> tickets)
     {
-        std::ifstream inputFile("ticket.txt", std::ios::app); 
+        std::ifstream inputFile("ticket.txt", std::ios::app);
 
         while (!inputFile.eof()) {
             Ticket<std::string>* a = new Ticket<std::string>();
@@ -955,11 +956,51 @@ namespace myNamespace
             {
                 tickets.push_back(a);
             }
-
-            delete a;
         }
 
         inputFile.close();
         return tickets;
+    }
+
+    std::string kodirovka(std::string text)
+    {
+        for (int i = 0; i < size(text); i++)
+        {
+            --text[i];
+        }
+        return text;
+    }
+
+    void outputWorkers(std::vector<Worker*> workers)
+    {
+        std::ofstream file("workers.txt");
+        if (file.is_open()) {
+            for (int i = 0; i < workers.size(); i++)
+            {
+                file << workers[i]->getLogin() << "\t" << workers[i]->getPassword() <<"\t" << workers[i]->getWorCode() << "\n" << workers[i]->getName() << std::endl;
+            }
+            file.close();
+        }
+        else {
+            std::cout << "Файл не открыт" << std::endl;
+        }
+
+    }
+    int inputWorkersFromFile(std::vector<Worker*>& workers)
+    {
+        int cur_workers = 0;
+        std::ifstream inputFile("workers.txt", std::ios::app); // открываем файл для чтения
+
+        while (!inputFile.eof()) {
+            Worker* pers = new Worker();
+            if (inputFile >> pers)
+            {
+                if (!pers->getName().size()) { break; }
+                workers.push_back(pers);
+                cur_workers++;
+            }
+        }
+        return cur_workers;
+        inputFile.close();
     }
 }
