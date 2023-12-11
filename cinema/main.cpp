@@ -4,7 +4,7 @@ int main()
 {
     system("chcp 1251");
     system("cls");
-
+    int iduser = 1000;
     Method method;
     int current_users = 0;
     std::vector<User*> users;
@@ -81,7 +81,8 @@ int main()
                 {
                 case 1:
                 {
-                    users.push_back(myNamespace::registrationUser(users));
+                    iduser++;
+                    users.push_back(myNamespace::registrationUser(users,iduser));
                     current_users++;
                     std::cout << "\n";
                     std::cout << "\t\t\t\t\t\t";
@@ -629,7 +630,7 @@ int main()
                                             for (int j = 1; j < 11; j++)
                                             {
                                                 std::string randomCharacters = myNamespace::generateRandomCharacters();
-                                                Ticket<std::string>* a = new Ticket<std::string>(j, i, cost_tick, randomCharacters, film_name);
+                                                Ticket<std::string>* a = new Ticket<std::string>(j, i, cost_tick, randomCharacters, film_name, iduser);
                                                 tick.push_back(a);
                                             }
                                         }

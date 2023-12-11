@@ -19,10 +19,10 @@ public:
 		id_user;
 		film_name = "";
 	};
-	Ticket(const int& seat, const int& row, const float& cost, const T& special_code,const std::string& film1)
+	Ticket(const int& seat, const int& row, const float& cost, const T& special_code, const std::string& film1, int id)
 	{
 		this->seat = seat; this->row = row; this->cost = cost; this->special_code = special_code;
-		this->user = NULL; this->film_name = film1;
+		this->user = NULL; this->film_name = film1; this->id_user = id;
 	}
 	Ticket(const Ticket& object)
 	{
@@ -49,6 +49,14 @@ public:
 	float getCost()
 	{
 		return this->cost;
+	}
+	int getUserId()
+	{
+		return this->id_user;
+	}
+	void setUserId(int id)
+	{
+		this->id_user = id;
 	}
 	void setFilmName(std::string film)
 	{

@@ -9,6 +9,7 @@ private:
 	int month_birth;
 	int date_birth;
 	float money;
+	int id;
 	std::vector<Ticket<std::string>*> myTickets;
 public:
 	User() {
@@ -17,12 +18,13 @@ public:
 		month_birth = 0;
 		date_birth = 0;
 		money = 0;
+		id = 0;
 	};
-	User(const std::string name, const std::string login, const std::string password, const std::string& email, const int& year_birth, const int& month_birth, const int& date_birth, const float& money)
+	User(const std::string name, const std::string login, const std::string password, const std::string& email, const int& year_birth, const int& month_birth, const int& date_birth, const float& money, const int& id)
 	{
 		this->name = name; this->login = login; this->password = password;
 		this->email = email; this->year_birth = year_birth; this->month_birth = month_birth; this->date_birth = date_birth;
-		this->money = money;
+		this->money = money; this->id = id;
 	}
 	User(const User& object);
 	~User() {}
@@ -47,6 +49,14 @@ public:
 		this->month_birth = month_birth;
 	}
 
+	void setId(int id)
+	{
+		this->id = id;
+	}
+	int getId()
+	{
+		return this->id;
+	}
 	void setMoney(float money) override
 	{
 		this->money = money;

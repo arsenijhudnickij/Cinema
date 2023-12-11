@@ -188,7 +188,7 @@ namespace myNamespace
         return password;
     }
 
-    User* registrationUser(std::vector<User*> users)
+    User* registrationUser(std::vector<User*> users, int id)
     {
         std::string kod;
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите логин:" << std::endl;
@@ -255,7 +255,7 @@ namespace myNamespace
 
         std::cout << "\n\n\n\n\n\t\t\t\t\t\tВы успешно зарегистрировались" << std::endl;
 
-        User* pers = new User(name_pers, kod, kodirovka(pass), email_pers, year, month, date, 0);
+        User* pers = new User(name_pers, kod, kodirovka(pass), email_pers, year, month, date, 0,id);
         return pers;
     }
     User* authorizationUser(std::vector<User*> users)
