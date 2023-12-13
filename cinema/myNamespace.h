@@ -78,6 +78,7 @@ namespace myNamespace
     int inputWorkersFromFile(std::vector<Worker*>& workers);
     void outputUsers(std::vector<User*> users);
     int inputUsersFromFile(std::vector<User*>& users);
+    void otchetFilms(int current_films, std::array <Film*, 10> films);
 
     void menuFull()
     {
@@ -1035,5 +1036,28 @@ namespace myNamespace
         }
         return cur_workers;
         inputFile.close();
+    }
+
+    void otchetFilms(int current_films, std::array <Film*, 10> films)
+    {
+        std::ofstream file("otchet.txt");
+        if (file.is_open()) 
+        {
+            file << "\t\t---------------------------------------------------------------------------------------------\n";
+            file << "\t\t|                                         ФИЛЬМЫ                                            |\n";
+            file << "\t\t---------------------------------------------------------------------------------------------\n";
+            file << "\t\t" << '|' << std::setw(30) << std::left << "Название " << '|' << std::setw(20) << "Жанр " << '|' << std::setw(15) << "Категория" << "|" << std::setw(12) << "Часы" << "|" << std::setw(10) << "Минуты" << "| \n";
+            file << "\t\t---------------------------------------------------------------------------------------------\n";
+            for (int i = 0; i < current_films; i++)
+            {
+                file << "\t\t" << '|' << std::setw(30) << std::left << films[i]->getName() << '|' << std::setw(20)
+                    << films[i]->getGanre() << '|' << std::setw(15) << films[i]->getCategory() << "|" << std::setw(12) << films[i]->getHour() << "|" << std::setw(10) << films[i]->getMinute() << "|" << std::endl;
+                file << "\t\t---------------------------------------------------------------------------------------------\n";
+            }
+            file.close();
+        }
+        else {
+            std::cout << "Файл не открыт" << std::endl;
+        }
     }
 }

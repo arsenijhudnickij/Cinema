@@ -15,7 +15,7 @@ int main()
     std::vector<Worker*> workers;
     int current_workers = myNamespace::inputWorkersFromFile(workers);
 
-    std::array <Film*, 10> films{};
+    std::array <Film*,10> films{};
     int current_films = myNamespace::inputFilmsFromFile(films);
 
     std::vector<Session*> sessions = myNamespace::inputSessionsFromFile(sessions);
@@ -33,7 +33,13 @@ int main()
             {
                 sessions[i]->addTicket(tickets[j]);
             }
-            if(tickets[j]->getUserId() == users[i]->getId())
+        }
+    }
+    for (int i = 0; i < users.size(); i++)
+    {
+        for (int j = 0; j < tickets.size(); j++)
+        {
+            if (tickets[j]->getUserId() == users[i]->getId())
             {
                 users[i]->addTicket(tickets[j]);
             }
@@ -1229,6 +1235,7 @@ int main()
             myNamespace::outputUsers(users);
             myNamespace::outputSessionsToFilms(films, current_films);
             myNamespace::outputTicketsToFilms(films, current_films);
+            myNamespace::otchetFilms(current_films, films);
             break;
         default:
             std::cout << "\n\n\n\n\n\t\t\t\t\t\t";
