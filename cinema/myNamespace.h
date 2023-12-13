@@ -42,7 +42,7 @@ public:
 namespace myNamespace
 {
     std::string hiddenPassword();
-    User* registrationUser(std::vector<User*> users);
+    User* registrationUser(std::vector<User*> users,int id);
     User* authorizationUser(std::vector<User*> users);
     Worker* registrationWorker(std::vector<Worker*> workers, int code[3]);
     Worker* authorizationWorker(std::vector<Worker*> workers);
@@ -76,6 +76,8 @@ namespace myNamespace
     std::string kodirovka(std::string text);
     void outputWorkers(std::vector<Worker*> workers);
     int inputWorkersFromFile(std::vector<Worker*>& workers);
+    void outputUsers(std::vector<User*> users);
+    int inputUsersFromFile(std::vector<User*>& users);
 
     void menuFull()
     {
@@ -672,7 +674,7 @@ namespace myNamespace
         for (int row = 1; row <= (a->getCollTick() / 10); ++row) {
             std::cout << "Ряд " << row << ": ";
             for (int seat = 1; seat <= 10; ++seat) {
-                if (tick[flag]->getUser() == NULL)
+                if (tick[flag]->getUserId() == 0)
                 {
                     std::cout << row << "(" << seat << ")" << " ";
                 }
@@ -892,7 +894,7 @@ namespace myNamespace
 
     void outputSessionsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("sessions.txt", std::ios::app);
+        std::ofstream file("sessions.txt");
         if (file.is_open()) {
             for (int i = 0; i < cur_films; i++)
             {
@@ -925,15 +927,13 @@ namespace myNamespace
 
     void outputTicketsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("ticket.txt", std::ios::app);
+        std::ofstream file("ticket.txt");
         if (file.is_open()) {
-            std::cout << films[0]->getSess()[0]->getVect().size();
-            system("cls");
             for (int i = 0; i < cur_films; i++)
             {
                 for (int j = 0; j < films[i]->getSess().size(); j++)
                 {
-                    for (int k = 0; films[i]->getSess()[j]->getVect().size(); k++)
+                    for (int k = 0; k<films[i]->getSess()[j]->getVect().size(); k++)
                     {
                         file << films[i]->getSess()[j]->getVect()[k];
                     }
@@ -997,6 +997,39 @@ namespace myNamespace
             {
                 if (!pers->getName().size()) { break; }
                 workers.push_back(pers);
+                cur_workers++;
+            }
+        }
+        return cur_workers;
+        inputFile.close();
+    }
+
+    void outputUsers(std::vector<User*> users)
+    {
+        std::ofstream file("users.txt");
+        if (file.is_open()) {
+            for (int i = 0; i < users.size(); i++)
+            {
+                file << users[i]->getYear() << '\t' << users[i]->getMoney() << '\t' << users[i]->getMonth() << '\t' << users[i]->getDay() << '\t' << users[i]->getId() << '\t' << users[i]->getEmail() << '\t' << users[i]->getLogin() << '\t' << users[i]->getPassword() << '\n' << users[i]->getName() << std::endl;
+            }
+            file.close();
+        }
+        else {
+            std::cout << "Файл не открыт" << std::endl;
+        }
+
+    }
+    int inputUsersFromFile(std::vector<User*>& users)
+    {
+        int cur_workers = 0;
+        std::ifstream inputFile("users.txt", std::ios::app); // открываем файл для чтения
+
+        while (!inputFile.eof()) {
+            User* pers = new User();
+            if (inputFile >> pers)
+            {
+                if (!pers->getName().size()) { break; }
+                users.push_back(pers);
                 cur_workers++;
             }
         }

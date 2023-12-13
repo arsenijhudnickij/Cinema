@@ -113,7 +113,8 @@ public:
 	void setFilmName(std::string name)
 	{
 		this->film_name = name;
-	}void setTime(std::string time)
+	}
+	void setTime(std::string time)
 	{
 		this->time_sess = time;
 	}

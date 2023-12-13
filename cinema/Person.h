@@ -20,6 +20,7 @@ public:
 	Person(const Person& object);
 	~Person() {}
 
+	virtual void setWorcode(int code) = 0;
 	std::string getLogin()
 	{
 		return this->login;
@@ -51,5 +52,4 @@ public:
 
 	virtual void setMoney(float money) = 0;
 	virtual int getWorCode() = 0;
-	virtual void setWorcode(int code) = 0;
 };

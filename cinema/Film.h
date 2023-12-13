@@ -77,31 +77,6 @@ public:
 	void showSessions();
 	void showData();
 
-	/*friend std::ostream& operator<<(std::ostream& out, Film* film)
-	{
-		out << film->getHour() << "\t";
-	    out << film->getMinute()<< std::endl;
-		out << film->getName() << std::endl;
-		out << film->getGanre() << std::endl;
-		out << film->getCategory() << std::endl;
-		return out;
-	}
-	
-	friend std::istream& operator>>(std::istream& in, Film* film) {
-		std::string name, genre, category;
-		int hour, minute;
-		in >> hour >> minute;
-		getline(in, name);
-		getline(in, genre);
-		getline(in, category);
-
-		film->setName(name);
-		film->setGenre(genre);
-		film->setCategory(category);
-		film->setHour(hour);
-		film->setMinute(minute);
-		return in;
-	}*/
 	friend std::ostream& operator<<(std::ostream& out, Film* film)
 	{
 		out << film->getHour() << "\t";

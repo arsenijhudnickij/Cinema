@@ -4,22 +4,54 @@ int main()
 {
     system("chcp 1251");
     system("cls");
-    int iduser = 1000;
+   
     Method method;
-    int current_users = 0;
-    std::vector<User*> users;
 
+    std::vector<User*> users;
+    int current_users = myNamespace::inputUsersFromFile(users);
+    
+    int iduser = users[users.size()-1]->getId()+1;
+    
     std::vector<Worker*> workers;
     int current_workers = myNamespace::inputWorkersFromFile(workers);
 
     std::array <Film*, 10> films{};
     int current_films = myNamespace::inputFilmsFromFile(films);
 
+    std::vector<Session*> sessions = myNamespace::inputSessionsFromFile(sessions);
     int del_workers = 0;
+    int sessNumber = sessions[sessions.size()-1]->getNumSess() + 1;
+    std::vector<class Ticket<std::string>*> tickets = myNamespace::inputTicketsFromFile(tickets);
 
-    std::vector<Session*> sessions  =myNamespace::inputSessionsFromFile(sessions);
+    for (int i = 0; i < sessions.size(); i++)
+    {
+        for (int j = 0; j < tickets.size(); j++)
+        {
+            if (tickets[j]->getFilmName() == sessions[i]->getFilmName() && tickets[j]->getYear() == sessions[i]->getYear()
+                && tickets[j]->getMonth() == sessions[i]->getMonth() && tickets[j]->getDay() == sessions[i]->getDay() 
+                && tickets[j]->getTime() == sessions[i]->getTime())
+            {
+                sessions[i]->addTicket(tickets[j]);
+            }
+            if(tickets[j]->getUserId() == users[i]->getId())
+            {
+                users[i]->addTicket(tickets[j]);
+            }
+        }
+    }
 
-    std::string nameAdmin = "qw";
+    for (int i = 0; i < current_films; i++)
+    {
+        for (int j = 0; j < sessions.size(); j++)
+        {
+            if (films[i]->getName() == sessions[j]->getFilmName())
+            {
+                films[i]->addSession(sessions[j]);
+            }
+        }
+    }
+
+    std::string nameAdmin = "Игорь Петров";
     std::string loginAdmin = "zxcvbnm123";
     std::string passwordAdmin = "qwertyuiop";
     std::string codeAdmin = "qwertyuiop";
@@ -237,12 +269,12 @@ int main()
                                                                 {
                                                                     flad++;
                                                                     int a = (row) * 10 + seat - 1;
-                                                                    if (g->getVect()[a]->getUser() == NULL)
+                                                                    if (g->getVect()[a]->getUserId() == 0)
                                                                     {
                                                                         if (curr_user->getMoney() >= g->getVect()[a]->getCost())
                                                                         {
                                                                             curr_user->setMoney(curr_user->getMoney() - g->getVect()[a]->getCost());
-                                                                            g->getVect()[a]->setUser(curr_user);
+                                                                            g->getVect()[a]->setUserId(curr_user->getId());
                                                                             curr_user->addTicket(g->getVect()[a]);
                                                                             std::cout << "\n\n\n\n\n\t\t\t\t\tУспешно куплен" << std::endl;
                                                                             break;
@@ -602,14 +634,14 @@ int main()
                                         system("cls");
 
                                         int num_tick{};
-                                        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите количество билетов на сеансе (кратное 10):" << std::endl;
+                                        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите количество билетов на сеансе (кратное 10, не более 50)" << std::endl;
                                         do {
                                             num_tick = myNamespace::checkNumber(num_tick);
-                                            if (num_tick < 10 || num_tick > 100 || num_tick % 10 != 0)
+                                            if (num_tick < 10 || num_tick > 50 || num_tick % 10 != 0)
                                             {
                                                 std::cout << "\n\t\t\t\t\t\tНеверный ввод, попробуйте сначала" << std::endl;
                                             }
-                                        } while (num_tick < 10 || num_tick > 100 || num_tick % 10 != 0);
+                                        } while (num_tick < 10 || num_tick > 50 || num_tick % 10 != 0);
                                         system("cls");
 
                                         float cost_tick{};
@@ -630,12 +662,12 @@ int main()
                                             for (int j = 1; j < 11; j++)
                                             {
                                                 std::string randomCharacters = myNamespace::generateRandomCharacters();
-                                                Ticket<std::string>* a = new Ticket<std::string>(j, i, cost_tick, randomCharacters, film_name, iduser);
+                                                Ticket<std::string>* a = new Ticket<std::string>(j, i, cost_tick, randomCharacters, film_name, time_ses,0, sess_year, sess_month,sess_date);
                                                 tick.push_back(a);
                                             }
                                         }
-                                        Session* b = new Session(sess_year, sess_month, sess_date, num_tick, time_ses, current_sessions+1, sess_hall, tick,film_name);
-                                        current_sessions++;
+                                        Session* b = new Session(sess_year, sess_month, sess_date, num_tick, time_ses, sessNumber, sess_hall, tick,film_name);
+                                        sessNumber++;
                                         for (int i = 0; i < current_films; i++)
                                         {
                                             if (films[i]->getName() == film_name)
@@ -831,6 +863,7 @@ int main()
                                     int corNam = 0;
                                     std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите название фильма:" << std::endl;
                                     do {
+                                        corNam = 0;
                                         std::cout << "\t\t\t\t\t\t";
                                         std::getline(std::cin, film_name);
                                         for (int i = 0; i < current_films; i++)
@@ -1193,8 +1226,9 @@ int main()
             std::cout << "\n\n\n\n\n\n\n\t\t\t\t";
             myNamespace::outputWorkers(workers);
             myNamespace::outputFilmsToFilms(films, current_films);
-           /* myNamespace::outputSessionsToFilms(films, current_films);
-            myNamespace::outputTicketsToFilms(films, current_films);*/
+            myNamespace::outputUsers(users);
+            myNamespace::outputSessionsToFilms(films, current_films);
+            myNamespace::outputTicketsToFilms(films, current_films);
             break;
         default:
             std::cout << "\n\n\n\n\n\t\t\t\t\t\t";

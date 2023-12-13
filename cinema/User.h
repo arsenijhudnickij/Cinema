@@ -85,7 +85,7 @@ public:
 	}
 	void addTicket(Ticket<std::string>* a)
 	{
-		return this->myTickets.push_back(a);
+		this->myTickets.push_back(a);
 	}
 	void showData() override
 	{
@@ -98,8 +98,29 @@ public:
 	{
 		return 0;
 	}
-	void showTicketsTable();
+	virtual void showTicketsTable();
 	void setWorcode(int code) override
 	{
+	}
+	friend std::istream& operator>>(std::istream& in, User* user)
+	{
+		std::string email, login, name, password;
+		int year_birth, month_birth, date_birth, id;
+		float money;
+
+		in >> year_birth >> money >> month_birth >> date_birth >> id >> email >> login >> password;
+		getline(in, name);
+		getline(in, name);
+		user->setDate(date_birth);
+		user->setEmail(email);
+		user->setId(id);
+		user->setLogin(login);
+		user->setMoney(money);
+		user->setMonthBirth(month_birth);
+		user->setName(name);
+		user->setPassword(password);
+		user->setYearBirth(year_birth);
+
+		return in;
 	}
 };

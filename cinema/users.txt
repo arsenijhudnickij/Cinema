@@ -1,0 +1,6 @@
+2005	35	1	27	1001	arsenij@gmail.com	qwertyuiop	pvdqsxthno
+Худницкий Арсений
+2004	0	4	19	1002	pavel@gmail.com	asdfghjkl	`rcefgijk
+Бадей Павел
+2004	0	9	9	1003	pats@gmail.com	zxcvbnm123	ywbuaml012
+Пацкевич Артем
