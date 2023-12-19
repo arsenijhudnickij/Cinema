@@ -1,6 +1,7 @@
 #pragma once
 #include "Person.h"
 #include "Ticket1.h"
+#include "Film.h"
 
 class User : public Person {
 private:

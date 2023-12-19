@@ -22,16 +22,16 @@ void User::showTicketsTable() {
 		std::cout << "--------------------------------------------------------------------------------------------------------------\n";
 		for (int i = 0; i < myTickets.size(); i++) {
 			Ticket<std::string>* ticket = myTickets[i];
-			std::cout << "|" << std::setw(6) << i + 1 << " | "
-				<< std::setw(22) << ticket->getFilmName() << " | "
-				<< std::setw(5) << ticket->getRow() << " | "
-				<< std::setw(7) << ticket->getSeat() << " | "
-				<< std::setw(11) << ticket->getSpecial_code() << " | "
-				<< std::setw(4) << ticket->getCost() << " |"
-				<< std::setw(6) << ticket->getYear() << " | "
-				<< std::setw(7) << ticket->getMonth() << " | "
-				<< std::setw(6) << ticket->getDay() << " | "
-				<< std::setw(7) << ticket->getTime() << " |\n";
+				std::cout << "|" << std::setw(6) << i + 1 << " | "
+					<< std::setw(22) << ticket->getFilmName() << " | "
+					<< std::setw(5) << ticket->getRow() << " | "
+					<< std::setw(7) << ticket->getSeat() << " | "
+					<< std::setw(11) << ticket->getSpecial_code() << " | "
+					<< std::setw(4) << ticket->getCost() << " |"
+					<< std::setw(6) << ticket->getYear() << " | "
+					<< std::setw(7) << ticket->getMonth() << " | "
+					<< std::setw(6) << ticket->getDay() << " | "
+					<< std::setw(7) << ticket->getTime() << " |\n";
 		}
 		std::cout <<"--------------------------------------------------------------------------------------------------------------\n";
 	}

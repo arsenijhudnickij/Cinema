@@ -39,6 +39,12 @@ public:
     }
 };
 
+const std::string workersFile = "D:/Курсовая работа/cinema/x64/Debug/workers.txt";
+const std::string ticketFile = "D:/Курсовая работа/cinema/x64/Debug/ticket.txt";
+const std::string sessionFile = "D:/Курсовая работа/cinema/x64/Debug/sessions.txt";
+const std::string userFile = "D:/Курсовая работа/cinema/x64/Debug/users.txt";
+const std::string filmFile = "D:/Курсовая работа/cinema/x64/Debug/film.txt";
+const std::string filmOtchet = "D:/Курсовая работа/cinema/x64/Debug/otchet.txt";
 namespace myNamespace
 {
     std::string hiddenPassword();
@@ -861,7 +867,7 @@ namespace myNamespace
 
     void outputFilmsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("film.txt");
+        std::ofstream file(filmFile);
         if (file.is_open()) {
             for (int i = 0; i < cur_films; i++)
             {
@@ -877,7 +883,7 @@ namespace myNamespace
     int inputFilmsFromFile(std::array <Film*, 10>& films)
     {
         int cur_films = 0;
-        std::ifstream inputFile("film.txt", std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile(filmFile, std::ios::app); // открываем файл для чтения
 
         while (!inputFile.eof()) {
             Film* film = new Film();
@@ -895,7 +901,7 @@ namespace myNamespace
 
     void outputSessionsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("sessions.txt");
+        std::ofstream file(sessionFile);
         if (file.is_open()) {
             for (int i = 0; i < cur_films; i++)
             {
@@ -913,7 +919,7 @@ namespace myNamespace
     }
     std::vector <Session*> inputSessionsFromFile(std::vector <Session*> sessions)
     {
-        std::ifstream inputFile("sessions.txt", std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile(sessionFile, std::ios::app); // открываем файл для чтения
 
         while (!inputFile.eof()) {
             Session* sess = new Session();
@@ -928,7 +934,7 @@ namespace myNamespace
 
     void outputTicketsToFilms(std::array <Film*, 10> films, int cur_films)
     {
-        std::ofstream file("ticket.txt");
+        std::ofstream file(ticketFile);
         if (file.is_open()) {
             for (int i = 0; i < cur_films; i++)
             {
@@ -949,7 +955,7 @@ namespace myNamespace
     }
     std::vector<class Ticket<std::string>*> inputTicketsFromFile(std::vector<class Ticket<std::string>*> tickets)
     {
-        std::ifstream inputFile("ticket.txt", std::ios::app);
+        std::ifstream inputFile(ticketFile, std::ios::app);
 
         while (!inputFile.eof()) {
             Ticket<std::string>* a = new Ticket<std::string>();
@@ -974,7 +980,7 @@ namespace myNamespace
 
     void outputWorkers(std::vector<Worker*> workers)
     {
-        std::ofstream file("workers.txt");
+        std::ofstream file(workersFile);
         if (file.is_open()) {
             for (int i = 0; i < workers.size(); i++)
             {
@@ -990,7 +996,7 @@ namespace myNamespace
     int inputWorkersFromFile(std::vector<Worker*>& workers)
     {
         int cur_workers = 0;
-        std::ifstream inputFile("workers.txt", std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile(workersFile, std::ios::app); // открываем файл для чтения
 
         while (!inputFile.eof()) {
             Worker* pers = new Worker();
@@ -1007,7 +1013,7 @@ namespace myNamespace
 
     void outputUsers(std::vector<User*> users)
     {
-        std::ofstream file("users.txt");
+        std::ofstream file(userFile);
         if (file.is_open()) {
             for (int i = 0; i < users.size(); i++)
             {
@@ -1023,7 +1029,7 @@ namespace myNamespace
     int inputUsersFromFile(std::vector<User*>& users)
     {
         int cur_workers = 0;
-        std::ifstream inputFile("users.txt", std::ios::app); // открываем файл для чтения
+        std::ifstream inputFile(userFile, std::ios::app); // открываем файл для чтения
 
         while (!inputFile.eof()) {
             User* pers = new User();
@@ -1040,7 +1046,7 @@ namespace myNamespace
 
     void otchetFilms(int current_films, std::array <Film*, 10> films)
     {
-        std::ofstream file("otchet.txt");
+        std::ofstream file(filmOtchet);
         if (file.is_open()) 
         {
             file << "\t\t---------------------------------------------------------------------------------------------\n";

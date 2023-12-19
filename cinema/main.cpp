@@ -5,6 +5,11 @@ int main()
     system("chcp 1251");
     system("cls");
    
+    std::string nameAdmin = "Игорь Петров";
+    std::string loginAdmin = "zxcvbnm123";
+    std::string passwordAdmin = "qwertyuiop";
+    std::string codeAdmin = "qwertyuiop";
+
     Method method;
 
     std::vector<User*> users;
@@ -20,7 +25,7 @@ int main()
 
     std::vector<Session*> sessions = myNamespace::inputSessionsFromFile(sessions);
     int del_workers = 0;
-    int sessNumber = sessions[sessions.size()-1]->getNumSess() + 1;
+    int sessNumber = sessions.size() + 1;
     std::vector<class Ticket<std::string>*> tickets = myNamespace::inputTicketsFromFile(tickets);
 
     for (int i = 0; i < sessions.size(); i++)
@@ -56,11 +61,6 @@ int main()
             }
         }
     }
-
-    std::string nameAdmin = "Игорь Петров";
-    std::string loginAdmin = "zxcvbnm123";
-    std::string passwordAdmin = "qwertyuiop";
-    std::string codeAdmin = "qwertyuiop";
 
     std::unique_ptr<Admin> admin1(new Admin(loginAdmin, myNamespace::kodirovka(passwordAdmin), nameAdmin, codeAdmin));
 
@@ -241,8 +241,10 @@ int main()
                                             {
                                                 g = session_cor[i];
                                                 myNamespace::checkHall(g, g->getCostTick());
+                                                
                                                 int row1{};
-                                                std::cout << "\n\n\n\n\n\t\t\t\tВведите желаемый ряд(если хотите вернуться введите ряд - (-1), место- (-1)):" << std::endl;
+                                                
+                                                std::cout << "\n\n\n\n\n\t\t\t\tВведите желаемый ряд(если хотите вернуться введите ряд - (-1)):" << std::endl;
                                                 do {
                                                     row1 = myNamespace::checkNumber(row1);
                                                     if (row1 < -2 || row1 > (g->getCollTick()) / 10)
@@ -251,59 +253,66 @@ int main()
                                                     }
                                                 } while (row1 < -2 || row1 > (g->getCollTick()) / 10);
 
-                                                int seat1{};
-                                                std::cout << "\n\n\n\n\n\t\t\t\tВведите желаемое место,(если хотите вернуться введите ряд - (-1), место- (-1)):" << std::endl;
-                                                do {
-                                                    seat1 = myNamespace::checkNumber(seat1);
-                                                    if (seat1 < -2 || seat1 > 10)
-                                                    {
-                                                        std::cout << "\n\n\t\t\t\t\t\tНеверный ввод данных" << std::endl;
-                                                    }
-                                                } while (seat1 < -2 || seat1 > 10);
-                                                system("cls");
                                                 int flad = 0;
-                                  
-                                                for (int row = 0; row < (g->getCollTick() / 10); ++row)
+                                                if (row1 != -1)
                                                 {
-                                                    if (flad == 0)
-                                                    {
-                                                        for (int seat = 1; seat <= 10; ++seat)
+                                                    int seat1{};
+                                                    std::cout << "\n\n\n\n\n\t\t\t\tВведите желаемое место,(если хотите вернуться введите ряд - (-1), место- (-1)):" << std::endl;
+                                                    do {
+                                                        seat1 = myNamespace::checkNumber(seat1);
+                                                        if (seat1 < -2 || seat1 > 10)
                                                         {
-                                                            if (flad == 0)
+                                                            std::cout << "\n\n\t\t\t\t\t\tНеверный ввод данных" << std::endl;
+                                                        }
+                                                    } while (seat1 < -2 || seat1 > 10);
+                                                    system("cls");
+                                                    
+                                                    for (int row = 0; row < (g->getCollTick() / 10); ++row)
+                                                    {
+                                                        if (flad == 0)
+                                                        {
+                                                            for (int seat = 1; seat <= 10; ++seat)
                                                             {
-                                                                if (row1 == row + 1 && seat1 == seat)
+                                                                if (flad == 0)
                                                                 {
-                                                                    flad++;
-                                                                    int a = (row) * 10 + seat - 1;
-                                                                    if (g->getVect()[a]->getUserId() == 0)
+                                                                    if (row1 == row + 1 && seat1 == seat)
                                                                     {
-                                                                        if (curr_user->getMoney() >= g->getVect()[a]->getCost())
+                                                                        flad++;
+                                                                        int a = (row) * 10 + seat - 1;
+                                                                        if (g->getVect()[a]->getUserId() == 0)
                                                                         {
-                                                                            curr_user->setMoney(curr_user->getMoney() - g->getVect()[a]->getCost());
-                                                                            g->getVect()[a]->setUserId(curr_user->getId());
-                                                                            curr_user->addTicket(g->getVect()[a]);
-                                                                            std::cout << "\n\n\n\n\n\t\t\t\t\tУспешно куплен" << std::endl;
-                                                                            break;
+                                                                            if (curr_user->getMoney() >= g->getVect()[a]->getCost())
+                                                                            {
+                                                                                curr_user->setMoney(curr_user->getMoney() - g->getVect()[a]->getCost());
+                                                                                g->getVect()[a]->setUserId(curr_user->getId());
+                                                                                curr_user->addTicket(g->getVect()[a]);
+                                                                                std::cout << "\n\n\n\n\n\t\t\t\t\tУспешно куплен" << std::endl;
+                                                                                break;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                std::cout << "\n\n\n\n\n\t\t\t\t\tНедостаточно средств" << std::endl;
+                                                                                break;
+                                                                            }
                                                                         }
                                                                         else
                                                                         {
-                                                                            std::cout << "\n\n\n\n\n\t\t\t\t\tНедостаточно средств" << std::endl;
+                                                                            std::cout << "\n\n\n\n\n\t\t\t\t\t\tБилет уже был куплен" << std::endl;
                                                                             break;
                                                                         }
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        std::cout << "\n\n\n\n\n\t\t\t\t\t\tБилет уже был куплен" << std::endl;
-                                                                        break;
                                                                     }
                                                                 }
                                                             }
                                                         }
+                                                        else
+                                                        {
+                                                            break;
+                                                        }
                                                     }
-                                                    else
-                                                    {
-                                                        break;
-                                                    }
+                                                }
+                                                else
+                                                {
+                                                    break;
                                                 }
                                                 if (flad == 0)
                                                 {
