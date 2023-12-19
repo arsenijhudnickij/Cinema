@@ -45,6 +45,7 @@ const std::string sessionFile = "D:/Курсовая работа/cinema/x64/Debug/sessions.tx
 const std::string userFile = "D:/Курсовая работа/cinema/x64/Debug/users.txt";
 const std::string filmFile = "D:/Курсовая работа/cinema/x64/Debug/film.txt";
 const std::string filmOtchet = "D:/Курсовая работа/cinema/x64/Debug/otchet.txt";
+const std::string adminFile = "D:/Курсовая работа/cinema/x64/Debug/admin.txt";
 namespace myNamespace
 {
     std::string hiddenPassword();
@@ -85,7 +86,7 @@ namespace myNamespace
     void outputUsers(std::vector<User*> users);
     int inputUsersFromFile(std::vector<User*>& users);
     void otchetFilms(int current_films, std::array <Film*, 10> films);
-
+    Admin* inputAdminFromFile();
     void menuFull()
     {
         std::cout << "\n\n\n\n\n\n\t\t\t\t\t\tВозможные роли:" << std::endl;
@@ -828,27 +829,39 @@ namespace myNamespace
     void checkSessionsData(int current_films, std::array <Film*, 10> films)
     {
         int year{};
-        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите год:" << std::endl;
-        year = checkNumber(year);
+        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите год сеанса:" << std::endl;
+        do {
+            year = myNamespace::checkNumber(year);
+            if (year < 2024 || year >2027)
+            {
+                std::cout << "\n\t\t\t\t\t\tНеверный ввод, попробуйте сначала" << std::endl;
+            }
+        } while (year < 2024 || year >2027);
         system("cls");
 
         int month{};
-        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите месяц:" << std::endl;
-        month = checkNumber(month);
+        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите месяц сеанса:" << std::endl;
+        do {
+            month = myNamespace::checkNumber(month);
+            if (month < 0 || month > 12)
+            {
+                std::cout << "\n\t\t\t\t\t\tНеверный ввод, попробуйте сначала" << std::endl;
+            }
+        } while (month < 0 || month > 12);
         system("cls");
 
         int day{};
-        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите день:" << std::endl;
-        day = checkNumber(day);
+        std::cout << "\n\n\n\n\n\t\t\t\t\t\tВведите день сеанса:" << std::endl;
+        do {
+            day = myNamespace::checkNumber(day);
+            if (day < 0 || day > 31)
+            {
+                std::cout << "\n\t\t\t\t\t\tНеверный ввод, попробуйте сначала" << std::endl;
+            }
+        } while (day < 0 || day > 31);
         system("cls");
 
-        std::cout << "\t--------------------------------------------------------------------------------------------------\n";
-        std::cout << "\t|                                              СЕАНСЫ                                            |\n";
-        std::cout << "\t--------------------------------------------------------------------------------------------------\n";
-        std::cout << "\t" << '|' << std::setw(10) << std::left << "Год " << '|' << std::setw(10) << "Месяц " << '|' << std::setw(10) << "День" << "|" << std::setw(13) << "Время начала " << "|"
-            << std::setw(7) << "Зал " << "|" << std::setw(15) << "Кол-во билетов" << "|" << std::setw(25) << "Название фильма" << "| \n";
-        std::cout << "\t--------------------------------------------------------------------------------------------------\n";
-        int flaggg = 0;
+        int sess1 = 0;
         for (int i = 0; i < current_films; i++)
         {
             std::vector<Session*> sess = films[i]->getSess();
@@ -858,10 +871,38 @@ namespace myNamespace
                 {
                     if (sess[j]->getYear() == year && sess[j]->getMonth() == month && sess[j]->getDay() == day)
                     {
-                        sess[j]->showDataForCheck();
+                        sess1++;
                     }
                 }
             }
+        }
+        if (sess1 > 0)
+        {
+            std::cout << "\t--------------------------------------------------------------------------------------------------\n";
+            std::cout << "\t|                                              СЕАНСЫ                                            |\n";
+            std::cout << "\t--------------------------------------------------------------------------------------------------\n";
+            std::cout << "\t" << '|' << std::setw(10) << std::left << "Год " << '|' << std::setw(10) << "Месяц " << '|' << std::setw(10) << "День" << "|" << std::setw(13) << "Время начала " << "|"
+                << std::setw(7) << "Зал " << "|" << std::setw(15) << "Кол-во билетов" << "|" << std::setw(25) << "Название фильма" << "| \n";
+            std::cout << "\t--------------------------------------------------------------------------------------------------\n";
+            int flaggg = 0;
+            for (int i = 0; i < current_films; i++)
+            {
+                std::vector<Session*> sess = films[i]->getSess();
+                if (sess.size() != 0)
+                {
+                    for (int j = 0; j < sess.size(); j++)
+                    {
+                        if (sess[j]->getYear() == year && sess[j]->getMonth() == month && sess[j]->getDay() == day)
+                        {
+                            sess[j]->showDataForCheck();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            std::cout << "\n\n\n\n\n\t\t\t\t\tОтсутствуют сеансы в эту дату" << std::endl;
         }
     }
 
@@ -1044,6 +1085,23 @@ namespace myNamespace
         inputFile.close();
     }
 
+    Admin* inputAdminFromFile()
+    {
+        std::ifstream inputFile(adminFile, std::ios::app); // открываем файл для чтения
+
+        Admin* admin = new Admin();
+        while (!inputFile.eof()) {
+            std::string specCode, login, name, password;
+            name = "Игорь Петров";
+            inputFile >> login >> specCode >> password;
+            admin->setLogin(login);
+            admin->setName(name);
+            admin->setPassword(password);
+            admin->setAdminCode(specCode);
+        }
+        return admin;
+        inputFile.close();
+    }
     void otchetFilms(int current_films, std::array <Film*, 10> films)
     {
         std::ofstream file(filmOtchet);

@@ -88,6 +88,10 @@ public:
 	{
 		this->myTickets.push_back(a);
 	}
+	void setTicket(std::vector<Ticket<std::string>*> a)
+	{
+		this->myTickets = a;
+	}
 	void showData() override
 	{
 		std::cout << "\t\t" << '|' << std::setw(30) << std::left << this->getName() << '|' << std::setw(20)
@@ -100,6 +104,10 @@ public:
 		return 0;
 	}
 	virtual void showTicketsTable();
+	std::vector<Ticket<std::string>*> getTickets()
+	{
+		return this->myTickets;
+	}
 	void setWorcode(int code) override
 	{
 	}

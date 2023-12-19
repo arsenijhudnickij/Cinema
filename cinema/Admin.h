@@ -30,6 +30,7 @@ public:
 		return 0;
 	}
 
+
 	void setMoney(float money) override
 	{
 

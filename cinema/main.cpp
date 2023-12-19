@@ -4,11 +4,6 @@ int main()
 {
     system("chcp 1251");
     system("cls");
-   
-    std::string nameAdmin = "Игорь Петров";
-    std::string loginAdmin = "zxcvbnm123";
-    std::string passwordAdmin = "qwertyuiop";
-    std::string codeAdmin = "qwertyuiop";
 
     Method method;
 
@@ -62,8 +57,8 @@ int main()
         }
     }
 
-    std::unique_ptr<Admin> admin1(new Admin(loginAdmin, myNamespace::kodirovka(passwordAdmin), nameAdmin, codeAdmin));
-
+    std::unique_ptr<Admin> admin1(myNamespace::inputAdminFromFile());
+   
     int codes[3] = { 123567,634521,719034 };
     int current_sessions = 0;
     int choice{};
@@ -962,6 +957,19 @@ int main()
                                     int cur = method.deleteSmth(films, fil_del, current_films);
                                     if (cur >= 0)
                                     {
+                                        for (int d = 0; d < current_users; d++)
+                                        {
+                                            for (int w = 0; w < users[d]->getTickets().size(); w++)
+                                            {
+                                                if (users[d]->getTickets()[w]->getFilmName() == films[cur]->getName())
+                                                {
+                                                    users[d]->setMoney(users[d]->getMoney() + users[d]->getTickets()[w]->getCost());
+                                                    std::vector<Ticket<std::string>*> myTic = users[d]->getTickets();
+                                                    myTic.erase(myTic.begin() + w);
+                                                    users[d]->setTicket(myTic);
+                                                }
+                                            }
+                                        }
                                         for (int j = cur; j < current_films; j++)
                                         {
                                             films[j] = films[j + 1];
